@@ -87,6 +87,7 @@ Every decomposition you add makes the agent better. This is [the flywheel](https
 | [core-py](https://github.com/OpenSymbolicAI/core-py) | Python runtime: primitives, blueprints (PlanExecute, DesignExecute, GoalSeeking), multi-provider LLM abstraction |
 | [examples-py](https://github.com/OpenSymbolicAI/examples-py) | Example agents: RAG, multi-hop QA, deep research, unit converter, date calculator |
 | [cli-py](https://github.com/OpenSymbolicAI/cli-py) | Interactive TUI for discovering and running agents |
+| [claude-skills](https://github.com/OpenSymbolicAI/claude-skills) | Claude Code skills for scaffolding agents, adding primitives/decompositions/evaluators, and debugging traces |
 
 ## Benchmarks
 
