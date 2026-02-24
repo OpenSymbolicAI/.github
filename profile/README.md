@@ -93,8 +93,23 @@ Every decomposition you add makes the agent better. This is [the flywheel](https
 
 | Benchmark | Result | What it shows |
 |-----------|--------|---------------|
-| [FOLIO](https://github.com/OpenSymbolicAI/benchmark-py-folio) | **89.2%** — outperforms GPT-4 CoT (78.1%) | PlanExecute + Z3 theorem prover. `gpt-oss-120b` (Fireworks) translates to first-order logic, Z3 proves it |
+| [TravelPlanner](https://github.com/OpenSymbolicAI/benchmark-py-TravelPlanner) | **97.9%** on 1,000 tasks — GPT-4 gets 0.6% | GoalSeeking two-stage. 100% hard constraint pass rate, 3.1× fewer tokens than LangChain. [Blog post](https://www.opensymbolic.ai/blog/travelplanner-benchmark) |
 | [MultiHopRAG](https://github.com/OpenSymbolicAI/benchmark-py-MultiHopRAG) | **82.9%** — +7.9pp over previous best | GoalSeeking iterates over 609 documents, 2,556 queries. `gpt-oss-120b` (Fireworks) |
+| [FOLIO](https://github.com/OpenSymbolicAI/benchmark-py-folio) | **89.2%** — outperforms GPT-4 CoT (78.1%) | PlanExecute + Z3 theorem prover. `gpt-oss-120b` (Fireworks) translates to first-order logic, Z3 proves it |
+
+### Framework Comparison (TravelPlanner)
+
+Same model (`gpt-oss-120b`), same tools, same evaluation — only the framework differs:
+
+```
+                Pass Rate        Tokens/Task       Cost/Passing Task    LLM Calls/Task
+                ─────────        ───────────       ─────────────────    ──────────────
+OpenSymbolicAI  ████████████ 100%  ██░░░░░░░  13,936   █░░░░░░░  $0.013    ██░░░░░░░  2.3
+LangChain       █████████░░░ 77.8% █████░░░░  43,801   ████░░░░  $0.051    ████████░  13.5
+CrewAI          ████████░░░░ 73.3% █████████  81,331   ████████  $0.100    █████████  39.6
+```
+
+7 models hit 100% pass rate — including **Llama 3.3 70B at $0.006/task and 4.3s latency** on Groq. The framework matters more than the model. See the [full model landscape](https://github.com/OpenSymbolicAI/benchmark-py-TravelPlanner/blob/main/MODEL-LANDSCAPE.md).
 
 ## Deep Dives
 
