@@ -8,9 +8,9 @@
 
 **Make AI a software engineering discipline.**
 
-Tool-calling agents cost [2.3x more](https://www.opensymbolic.ai/blog/illustration-part-3-cost-and-reliability), [fail ~20% of the time](https://www.opensymbolic.ai/blog/illustration-part-3-cost-and-reliability), and [ignore your instructions](https://www.opensymbolic.ai/blog/illustration-part-1-the-attention-loss-problem) as context grows. Every ReAct loop re-tokenizes the entire conversation, burning tokens and losing accuracy with each step.
+On the [TravelPlanner benchmark](https://www.opensymbolic.ai/blog/travelplanner-benchmark) (ICML 2024), LangChain passes 77.8% of tasks and CrewAI passes 73.3%. They burn [3–6× more tokens](https://www.opensymbolic.ai/blog/illustration-part-2-token-economics), cost [4–8× more](https://www.opensymbolic.ai/blog/illustration-part-3-cost-and-reliability) per passing result, and [lose track of instructions](https://www.opensymbolic.ai/blog/illustration-part-1-the-attention-loss-problem) as context grows. GPT-4 alone scores 0.6%.
 
-OpenSymbolicAI fixes this by splitting the LLM's job in two:
+OpenSymbolicAI scores **97.9%** on 1,000 tasks by splitting the LLM's job in two:
 
 ```
 ┌─────────────────────────────────────┐
@@ -88,10 +88,21 @@ Every decomposition you add makes the agent better. This is [the flywheel](https
 
 ## Repositories
 
+### Runtimes
+
+| Language | Repo | Description |
+|----------|------|-------------|
+| Python | [core-py](https://github.com/OpenSymbolicAI/core-py) | Primitives, blueprints (PlanExecute, DesignExecute, GoalSeeking), multi-provider LLM abstraction |
+| TypeScript | [core-ts](https://github.com/OpenSymbolicAI/core-ts) | TypeScript core SDK |
+| Go | [core-go](https://github.com/OpenSymbolicAI/core-go) | Go runtime with AST-based plan execution |
+| C# / .NET | [core-dotnet](https://github.com/OpenSymbolicAI/core-dotnet) | .NET runtime |
+
+### Examples & Tools
+
 | Repo | Description |
 |------|-------------|
-| [core-py](https://github.com/OpenSymbolicAI/core-py) | Python runtime: primitives, blueprints (PlanExecute, DesignExecute, GoalSeeking), multi-provider LLM abstraction |
-| [examples-py](https://github.com/OpenSymbolicAI/examples-py) | Example agents: RAG, multi-hop QA, deep research, unit converter, date calculator |
+| [examples-py](https://github.com/OpenSymbolicAI/examples-py) | Python examples: RAG, multi-hop QA, deep research, unit converter, date calculator |
+| [examples-ts](https://github.com/OpenSymbolicAI/examples-ts) | TypeScript examples: RAG Agent, Date Agent, Unit Converter |
 | [cli-py](https://github.com/OpenSymbolicAI/cli-py) | Interactive TUI for discovering and running agents |
 | [claude-skills](https://github.com/OpenSymbolicAI/claude-skills) | Claude Code skills for scaffolding agents, adding primitives/decompositions/evaluators, and debugging traces |
 
@@ -100,8 +111,9 @@ Every decomposition you add makes the agent better. This is [the flywheel](https
 | Benchmark | Result | What it shows |
 |-----------|--------|---------------|
 | [TravelPlanner](https://github.com/OpenSymbolicAI/benchmark-py-TravelPlanner) | **97.9%** on 1,000 tasks — GPT-4 gets 0.6% | GoalSeeking two-stage. 100% hard constraint pass rate, 3.1× fewer tokens than LangChain. [Blog post](https://www.opensymbolic.ai/blog/travelplanner-benchmark) |
-| [MultiHopRAG](https://github.com/OpenSymbolicAI/benchmark-py-MultiHopRAG) | **82.9%** — +7.9pp over previous best | GoalSeeking iterates over 609 documents, 2,556 queries. `gpt-oss-120b` (Fireworks) |
-| [FOLIO](https://github.com/OpenSymbolicAI/benchmark-py-folio) | **89.2%** — outperforms GPT-4 CoT (78.1%) | PlanExecute + Z3 theorem prover. `gpt-oss-120b` (Fireworks) translates to first-order logic, Z3 proves it |
+| [MultiHopRAG](https://github.com/OpenSymbolicAI/benchmark-py-MultiHopRAG) | **82.9%** — +7.9pp over previous best | GoalSeeking, 609 documents, 2,556 queries. Same result in [Python](https://github.com/OpenSymbolicAI/benchmark-py-MultiHopRAG), [C#](https://github.com/OpenSymbolicAI/benchmark-cs-MultiHopRAG) (83.8%), and [Go](https://github.com/OpenSymbolicAI/benchmark-go-MultiHopRAG) (81.6%). [Blog post](https://www.opensymbolic.ai/blog/multihop-rag-cross-language) |
+| [LegalBench](https://github.com/OpenSymbolicAI/benchmark-py-legalbench) | **93.1%** across 162 legal reasoning tasks | GoalSeeking agent. 835 items, 0 errors, $1.88 total cost |
+| [FOLIO](https://github.com/OpenSymbolicAI/benchmark-py-folio) | **89.2%** — outperforms GPT-4 CoT (78.1%) | PlanExecute + Z3 theorem prover. First-order logic reasoning |
 
 ### Framework Comparison (TravelPlanner)
 
@@ -121,10 +133,16 @@ CrewAI          ████████░░░░ 73.3% ███████
 
 - [Getting Started](https://www.opensymbolic.ai/blog/getting-started-with-opensymbolicai) - Build your first agent in 5 minutes
 - [The OpenSymbolicAI Manifesto](https://www.opensymbolic.ai/blog/the-opensymbolicai-manifesto) - The philosophy behind the architecture
+- [The Anatomy of PlanExecute](https://www.opensymbolic.ai/blog/plan-execute-anatomy) - Why the core blueprint is what it is
 - [Behaviour Programming vs. Tool Calling](https://www.opensymbolic.ai/blog/behaviour-programming-vs-tool-calling) - Why executable examples beat massive prompts
-- [LLM Attention Is Precious: Why ReAct Wastes It](https://www.opensymbolic.ai/blog/llm-attention-is-precious) - A visual breakdown of token waste
+- [English, Spec, or Code](https://www.opensymbolic.ai/blog/the-prompt-spectrum) - How you talk to the LLM decides how far you get
+- [LLM Attention Is Precious](https://www.opensymbolic.ai/blog/llm-attention-is-precious) - A visual breakdown of token waste
 - [Secure by Design](https://www.opensymbolic.ai/blog/security-by-design) - How the Symbolic Firewall prevents prompt injection
 - [The Missing Flywheel in Agent Building](https://www.opensymbolic.ai/blog/the-missing-flywheel-in-agent-building) - Why agents stay brittle and how to fix it
+- [Closing the Flywheel in Practice](https://www.opensymbolic.ai/blog/closing-the-flywheel-in-practice) - Practical implementation of the flywheel
+- [Agent-to-Agent Is Just Function Calls](https://www.opensymbolic.ai/blog/agent-to-agent) - Multi-agent systems need typed interfaces, not new infrastructure
+- [Change Everything, Change Nothing](https://www.opensymbolic.ai/blog/multihop-rag-cross-language) - MultiHopRAG in Python and C# — accuracy moves by 0.9pp
+- [Third Language, Same Result](https://www.opensymbolic.ai/blog/multihop-rag-go) - MultiHopRAG in Go — the framework holds across three languages
 
 ## License
 
